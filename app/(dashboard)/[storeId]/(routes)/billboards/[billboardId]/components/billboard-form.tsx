@@ -15,7 +15,6 @@ import { Heading } from "@/components/ui/heading";
 import ImageUpload from "@/components/ui/image-upload";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { useOrigin } from "@/hooks/use-origin";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Billboard } from "@prisma/client";
 import axios from "axios";
@@ -49,7 +48,6 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
     ? "Billboard updated."
     : "Billboard created.";
   const action = initialData ? "Save changes" : "Create";
-  const orgin = useOrigin();
 
   const form = useForm<BillboardFormValues>({
     resolver: zodResolver(formSchema),
@@ -68,6 +66,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
         await axios.post(`/api/${params.storeId}/billboards`, data);
       }
       router.refresh();
+      router.push(`/${params.storeId}/billboards`);
       toast.success(toastMessage);
     } catch (error) {
       toast.error("Something went wrong.");
